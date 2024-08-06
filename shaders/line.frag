@@ -16,6 +16,6 @@ layout(std140, binding = 0) uniform buf {
 
 void main(void)
 {
-    float tt = smoothstep(spread, 1.0, sin(vT * PI));
+    float tt = smoothstep(size, 1.0, sin(vT * PI));
     fragColor = color * qt_Opacity * tt;
 }

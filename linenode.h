@@ -2,13 +2,14 @@
 #define LINENODE_H
 
 #include <QSGGeometryNode>
+#include <XYPoint.h>
 
 class LineNode : public QSGGeometryNode
 {
 public:
     LineNode(float size, float spread, const QColor &color);
 
-    void updateGeometry(const QRectF &bounds, const QList<qreal> &samples, size_t maxPointCount);
+    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples, size_t maxPointCount);
 
 
 private:

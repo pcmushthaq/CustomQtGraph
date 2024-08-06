@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QT_QML_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
 
-find_package(Qt6 6.5 COMPONENTS Quick ShaderTools REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick ShaderTools REQUIRED)
 
 qt_add_library(GraphLibraryTest STATIC)
 qt_add_qml_module(GraphLibraryTest
@@ -15,6 +15,11 @@ qt_add_qml_module(GraphLibraryTest
     QML_FILES QCustomGraphControls.qml
     SOURCES qcustomgraph.cpp qcustomgraph.h
     SOURCES linenode.h linenode.cpp
+    SOURCES src/series/basegraphseries.h src/series/basegraphseries.cpp
+    SOURCES src/series/linegraphseries.h src/series/linegraphseries.cpp
+    SOURCES src/series/xypoint.h src/series/xypoint.cpp
+    SOURCES src/series/areagraphseries.h src/series/areagraphseries.cpp
+    SOURCES src/nodes/areanode.h src/nodes/areanode.cpp
 )
 
 qt6_add_shaders(GraphLibraryTest "GraphLibraryShaders"
@@ -40,6 +45,8 @@ target_link_libraries(GraphLibraryTest
     PRIVATE Qt6::Quick)
 
 target_include_directories(GraphLibraryTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(GraphLibraryTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/series)
+target_include_directories(GraphLibraryTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/nodes)
 
 # Example Project
 qt_add_executable(ExampleProject example/example.cpp)

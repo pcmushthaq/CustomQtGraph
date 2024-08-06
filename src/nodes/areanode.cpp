@@ -1,14 +1,14 @@
 
-#include "linenode.h"
+#include "areanode.h"
 #include <iostream>
 #include <QtGui/QColor>
 
 #include <QtQuick/QSGMaterial>
 
-class LineShader : public QSGMaterialShader
+class AreaShader : public QSGMaterialShader
 {
 public:
-    LineShader() {
+    AreaShader() {
         setShaderFileName(VertexStage, QLatin1String("://shaders/line.vert.qsb"));
         setShaderFileName(FragmentStage, QLatin1String("://shaders/line.frag.qsb"));
     }
@@ -16,10 +16,10 @@ public:
     bool updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *oldMaterial) override;
 };
 
-class LineMaterial : public QSGMaterial
+class AreaMaterial : public QSGMaterial
 {
 public:
-    LineMaterial()
+    AreaMaterial()
     {
         setFlag(Blending);
     }
@@ -32,12 +32,12 @@ public:
 
     QSGMaterialShader *createShader(QSGRendererInterface::RenderMode) const override
     {
-        return new LineShader;
+        return new AreaShader;
     }
 
     int compare(const QSGMaterial *m) const override
     {
-        const LineMaterial *other = static_cast<const LineMaterial *>(m);
+        const AreaMaterial *other = static_cast<const AreaMaterial *>(m);
 
         if (int diff = int(state.color.rgb()) - int(other->state.color.rgb()))
             return diff;
@@ -58,7 +58,7 @@ public:
     } state;
 };
 
-bool LineShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *)
+bool AreaShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial, QSGMaterial *)
 {
     /// Uniform data is the data which is uniform throughout the shader
     /// This does not change depending on the vertex
@@ -85,7 +85,7 @@ bool LineShader::updateUniformData(RenderState &state, QSGMaterial *newMaterial,
         memcpy(buf->data() + 80, &opacity, 4);
     }
 
-    LineMaterial *mat = static_cast<LineMaterial *>(newMaterial);
+    AreaMaterial *mat = static_cast<AreaMaterial *>(newMaterial);
     float c[4];
     mat->state.color.getRgbF(&c[0], &c[1], &c[2], &c[3]);
     memcpy(buf->data() + 64, c, 16);
@@ -120,13 +120,13 @@ static const QSGGeometry::AttributeSet &attributes()
     return set;
 }
 
-LineNode::LineNode(float size, float spread, const QColor &color)
+AreaNode::AreaNode(float size, float spread, const QColor &color)
     : m_geometry(attributes(), 0)
 {
     setGeometry(&m_geometry);
     m_geometry.setDrawingMode(QSGGeometry::DrawTriangleStrip);
 
-    LineMaterial *m = new LineMaterial;
+    AreaMaterial *m = new AreaMaterial;
     m->state.color = color;
     m->state.size = size;
     m->state.spread = spread;
@@ -143,10 +143,10 @@ LineNode::LineNode(float size, float spread, const QColor &color)
  * The position of each pair of points is identical, but we use the third value
  * "t" to shift the point up or down and to add antialiasing.
  */
-void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples, size_t maxPointCount)
+void AreaNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples, size_t maxPointCount)
 {
 
-    m_geometry.allocate(samples.size() * 2);
+    m_geometry.allocate(samples.size());
 
     float x = bounds.x();
     float y = bounds.y();
@@ -157,10 +157,9 @@ void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &sampl
 
     LineVertex *v = (LineVertex *) m_geometry.vertexData();
     for (int i=0; i<samples.size(); ++i) {
-        auto newX=x + dx * i;
+        auto newX=x + samples.at(i)->x() * dx;
         auto newY=y + samples.at(i)->y() * h;
-        v[i*2+0].set(newX,newY , 0);
-        v[i*2+1].set(newX, newY, 1);
+        v[i].set(newX,newY , 0);
     }
 
     markDirty(QSGNode::DirtyGeometry);

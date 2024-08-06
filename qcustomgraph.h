@@ -1,6 +1,7 @@
 #ifndef QCUSTOMGRAPH_H
 #define QCUSTOMGRAPH_H
 
+#include <LineGraphSeries.h>
 #include <QQuickItem>
 
 class QCustomGraph : public QQuickItem
@@ -8,7 +9,12 @@ class QCustomGraph : public QQuickItem
     Q_OBJECT
     QML_ELEMENT
     Q_DISABLE_COPY(QCustomGraph)
+
+    Q_PROPERTY(QQmlListProperty<BaseGraphSeries> serieses READ serieses FINAL)
 public:
+
+    QQmlListProperty<BaseGraphSeries> serieses();
+
     explicit QCustomGraph(QQuickItem *parent = nullptr);
     ~QCustomGraph() override;
 
@@ -22,7 +28,9 @@ public slots:
     void removeFirstSample();
 
 private:
+    static void append_series(QQmlListProperty<BaseGraphSeries> *list, BaseGraphSeries *ser);
     QList<QPointF> m_points;
+    QList<BaseGraphSeries *> m_series;
     QList<qreal> m_samples;
     bool m_samplesChanged=false;
     bool m_geometryChanged=false;
