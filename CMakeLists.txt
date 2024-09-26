@@ -13,8 +13,8 @@ qt_add_qml_module(QCustomGraph
     URI QCustomGraph
     VERSION 1.0
     QML_FILES QCustomGraphControls.qml
-    SOURCES qcustomgraph.cpp qcustomgraph.h
-    SOURCES linenode.h linenode.cpp
+    SOURCES src/qcustomgraph.cpp src/qcustomgraph.h
+    SOURCES src/nodes/linenode.h src/nodes/linenode.cpp
     SOURCES src/series/basegraphseries.h src/series/basegraphseries.cpp
     SOURCES src/series/linegraphseries.h src/series/linegraphseries.cpp
     SOURCES src/series/xypoint.h src/series/xypoint.cpp
@@ -47,6 +47,7 @@ target_link_libraries(QCustomGraph
     PRIVATE Qt6::Quick)
 
 target_include_directories(QCustomGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(QCustomGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(QCustomGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/series)
 target_include_directories(QCustomGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/nodes)
 target_include_directories(QCustomGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/axes)
