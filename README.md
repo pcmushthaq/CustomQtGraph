@@ -5,3 +5,25 @@ The API is similar to the QtCharts API. This is intended to be used for high per
 This is hardware accelarated.
 
 Support for AreaChart is under development.
+
+## Example Line Graph
+
+To create a simple line graph, create an instance of QCusomtGraph and add a LineGraphSeries element inside
+
+```
+QCustomGraph {
+        id: graph
+        anchors.fill: parent
+
+        serieses:[
+            LineGraphSeries{
+                id: lineSeries
+                points: [
+                    XYPoint{ x: 0; y: 0.1},
+                    XYPoint{ x: 1 ;y: 0.2},
+                    XYPoint{ x: 2 ;y: 0.3}
+                ]
+            }
+        ]
+    }
+```
