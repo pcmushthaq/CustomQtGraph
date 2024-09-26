@@ -62,6 +62,19 @@ void LineGraphSeries::setAxisX(ValueAxis* &newAxisX)
     emit axisXChanged();
 }
 
+ValueAxis *LineGraphSeries::axisY() const
+{
+    return m_axisY;
+}
+
+void LineGraphSeries::setAxisY(ValueAxis *&newAxisY)
+{
+    if (m_axisY == newAxisY)
+        return;
+    m_axisY = newAxisY;
+    emit axisYChanged();
+}
+
 void LineGraphSeries::addPoint(qreal x, qreal y)
 {
     auto point= new XYPoint(x,y);

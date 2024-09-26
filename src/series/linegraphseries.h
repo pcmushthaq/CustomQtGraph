@@ -13,6 +13,7 @@ class LineGraphSeries : public BaseGraphSeries
     Q_PROPERTY(qreal width READ width WRITE setWidth NOTIFY widthChanged FINAL)
     Q_PROPERTY(QQmlListProperty<XYPoint> points READ points FINAL)
     Q_PROPERTY(ValueAxis* axisX READ axisX WRITE setAxisX NOTIFY axisXChanged FINAL)
+    Q_PROPERTY(ValueAxis* axisY READ axisY WRITE setAxisY NOTIFY axisYChanged FINAL)
     Q_PROPERTY(int pointsCount READ pointsCount CONSTANT FINAL)
 
     QML_NAMED_ELEMENT(LineGraphSeries)
@@ -32,6 +33,8 @@ public:
     void setColor(const QColor &newColor) override;
     ValueAxis* axisX() const;
     void setAxisX( ValueAxis* &newAxisX);
+    ValueAxis* axisY() const;
+    void setAxisY( ValueAxis* &newAxisY);
 
     int pointsCount() const;
 
@@ -43,12 +46,14 @@ public slots:
 signals:
     void widthChanged();
     void axisXChanged();
+    void axisYChanged();
 
 private:
     qreal m_width;
     QList<XYPoint*> m_points;
     QColor m_Color;
     ValueAxis* m_axisX;
+    ValueAxis* m_axisY;
     int m_pointsCount;
 };
 

@@ -69,12 +69,11 @@ QSGNode *QCustomGraph::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
                 /// Handle line graph
                 auto lineSer=static_cast<LineGraphSeries*> (m_series[i]);
                 auto lineNode=static_cast<LineNode *>(n->lines[i]);
-                if(lineSer->axisX()!=nullptr && lineSer->axisX()->max() != lineSer->axisX()->min()){
-                lineNode->updateGeometry(rect, lineSer->dataPoint(),lineSer->axisX()->min(),lineSer->axisX()->max());
-                }
-                else{
-                    lineNode->updateGeometry(rect, lineSer->dataPoint());
-                }
+                lineNode->updateGeometry(rect,
+                                         lineSer->dataPoint(),
+                                         lineSer->axisX(),
+                                         lineSer->axisY());
+
             }
 
             else if(m_series[i]->graphType() ==  BaseGraphSeries::GraphType::AreaGraph) {

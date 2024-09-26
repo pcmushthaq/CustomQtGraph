@@ -10,8 +10,6 @@ Window {
     visible: true
     title: qsTr("Example Project")
 
-
-
     QCustomGraph {
         id: graph
         anchors.top: parent.top
@@ -20,50 +18,50 @@ Window {
         width: parent.width - 20
         height: parent.height
 
-        Timer{
-            interval: 5
-            running: true
-            repeat: true
-            onTriggered: {
-                graph.newSample()
-            }
-        }
-
-        property int inumber : 0
-
-        function newSample(i) {
-
-            var value= (Math.sin(inumber / 200.0 * Math.PI * 2) + 1) * 0.4 + Math.random() * 0.05;
-            inumber++;
-            if (inumber === 200){
-                inumber=0;
-            }
-            lineSeries1.addPoint(inumber,value)
-            if(lineSeries1.pointsCount >= 800){
-                lineSeries1.removeFirst()
-
-            }
-        }
-
-        Component.onCompleted: {
-            for (var i=0; i<graph.offset; ++i)
-                appendSample(newSample(i));
-            appendSample(0.1)
-            appendSample(0.3)
-            appendSample(0.2)
-
-        }
-
-        property int offset: 0
-
-        serieses:[
-            LineGraphSeries{
-                id: lineSeries1
+        serieses: [
+            LineGraphSeries {
+                id: lineSeries
+                color: "green"
                 points: [
-                    XYPoint{x:0;y:0.1 },
-                    XYPoint{ x: 1 ;y:0.2},
-                    XYPoint{ x: 2 ;y:0.3}
+                    XYPoint {
+                        x: 0
+                        y: 10
+                    },
+                    XYPoint {
+                        x: 10
+                        y: 5
+                    },
+                    XYPoint {
+                        x: 20
+                        y: 20
+                    },
+                    XYPoint {
+                        x: 30
+                        y: 15
+                    },
+                    XYPoint {
+                        x: 40
+                        y: 30
+                    },
+                    XYPoint {
+                        x: 50
+                        y: 25
+                    },
+                    XYPoint {
+                        x: 60
+                        y: 40
+                    }
                 ]
+
+                axisX: ValueAxis {
+                    min: 0
+                    max: 60
+                }
+
+                axisY: ValueAxis {
+                    min: 0
+                    max: 40
+                }
             }
         ]
     }

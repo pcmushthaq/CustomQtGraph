@@ -2,6 +2,7 @@
 #define LINENODE_H
 
 #include <QSGGeometryNode>
+#include <ValueAxis.h>
 #include <XYPoint.h>
 
 class LineNode : public QSGGeometryNode
@@ -9,11 +10,10 @@ class LineNode : public QSGGeometryNode
 public:
     LineNode(float size, float spread, const QColor &color);
 
-    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples);
-
-    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples,double min, double max);
-
-
+    void updateGeometry(const QRectF &bounds,
+                        const QList<XYPoint *> &samples,
+                        ValueAxis *xAxis,
+                        ValueAxis *yAxis);
 
 private:
     QSGGeometry m_geometry;

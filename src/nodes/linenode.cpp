@@ -135,17 +135,17 @@ LineNode::LineNode(float size, float spread, const QColor &color)
     setFlag(OwnsMaterial);
 }
 
-/*
- * Assumes that samples have values in the range of 0 to 1 and scales them to
- * the height of bounds. The samples are stretched out horizontally along the
- * width of the bounds.
- *
- * The position of each pair of points is identical, but we use the third value
- * "t" to shift the point up or down and to add antialiasing.
+/* 
+ * When xAxis and yAxis are given,
+ * The graph x points will be starting from min and ending at max
+ * x value of max means that the point will be at the width
+ * Similarly for y axis
  */
-void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples)
+void LineNode::updateGeometry(const QRectF &bounds,
+                              const QList<XYPoint *> &samples,
+                              ValueAxis *xAxis,
+                              ValueAxis *yAxis)
 {
-
     m_geometry.allocate(samples.size() * 2);
 
     float x = bounds.x();
@@ -153,43 +153,31 @@ void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &sampl
     float w = bounds.width();
     float h = bounds.height();
 
-    float dx = w / (samples.size() - 1);
+    double xMin = 0.0, yMin = 0.0, xMax = 0.0, yMax = 0.0;
 
-    LineVertex *v = (LineVertex *) m_geometry.vertexData();
-    for (int i=0; i<samples.size(); ++i) {
-        auto newX=x + dx * i;
-        auto newY=y + samples.at(i)->y() * h;
-        v[i*2+0].set(newX,newY , 0);
-        v[i*2+1].set(newX, newY, 1);
+    if (xAxis != nullptr) {
+        xMin = xAxis->min();
+        xMax = xAxis->max();
+    }
+    if (yAxis != nullptr) {
+        yMin = yAxis->min();
+        yMax = yAxis->max();
     }
 
-    markDirty(QSGNode::DirtyGeometry);
-}
-
-
-/// When min and max values are given,
-/// The graph x points will be starting from min and ending at max
-/// x value of max means that the point will be at the width
-void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples, double min, double max)
-{
-    if(min==max){
-        return;
-    }
-    m_geometry.allocate(samples.size() * 2);
-
-    float x = bounds.x();
-    float y = bounds.y();
-    float w = bounds.width();
-    float h = bounds.height();
-
-
     LineVertex *v = (LineVertex *) m_geometry.vertexData();
-    for (int i=0; i<samples.size(); ++i) {
-        auto mappedValue= (samples.at(i)->x() - min)/(max-min);
-        auto newX=x + mappedValue * w;
-        auto newY=y + samples.at(i)->y() * h;
-        v[i*2+0].set(newX,newY , 0);
-        v[i*2+1].set(newX, newY, 1);
+    for (int i = 0; i < samples.size(); ++i) {
+        auto xValue = samples.at(i)->x();
+        if (xMin != xMax) {
+            xValue = (xValue - xMin) / (xMax - xMin);
+        }
+        auto yValue = samples.at(i)->y();
+        if (yMin != yMax) {
+            yValue = (yValue - yMin) / (yMax - yMin);
+        }
+        auto newX = x + xValue * w;
+        auto newY = y + yValue * h;
+        v[i * 2 + 0].set(newX, newY, 0);
+        v[i * 2 + 1].set(newX, newY, 1);
     }
 
     markDirty(QSGNode::DirtyGeometry);
