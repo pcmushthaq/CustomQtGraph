@@ -27,6 +27,8 @@ public slots:
 
     void removeFirstSample();
 
+
+
 private:
     static void append_series(QQmlListProperty<BaseGraphSeries> *list, BaseGraphSeries *ser);
     QList<QPointF> m_points;
@@ -34,6 +36,8 @@ private:
     QList<qreal> m_samples;
     bool m_samplesChanged=false;
     bool m_geometryChanged=false;
+
+    void onGraphSeriesChanged();
 };
 
 #endif // QCUSTOMGRAPH_H

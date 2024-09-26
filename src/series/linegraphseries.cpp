@@ -48,3 +48,34 @@ void LineGraphSeries::setColor(const QColor &newColor)
     m_Color = newColor;
     emit colorChanged();
 }
+
+ValueAxis* LineGraphSeries::axisX() const
+{
+    return m_axisX;
+}
+
+void LineGraphSeries::setAxisX(ValueAxis* &newAxisX)
+{
+    if (m_axisX == newAxisX)
+        return;
+    m_axisX = newAxisX;
+    emit axisXChanged();
+}
+
+void LineGraphSeries::addPoint(qreal x, qreal y)
+{
+    auto point= new XYPoint(x,y);
+    m_points.push_back(point);
+    emit seriesChanged();
+}
+
+void LineGraphSeries::removeFirst()
+{
+    m_points.removeFirst();
+    emit seriesChanged();
+}
+
+int LineGraphSeries::pointsCount() const
+{
+    return m_points.size();
+}

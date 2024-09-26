@@ -9,7 +9,10 @@ class LineNode : public QSGGeometryNode
 public:
     LineNode(float size, float spread, const QColor &color);
 
-    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples, size_t maxPointCount);
+    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples);
+
+    void updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples,double min, double max);
+
 
 
 private:

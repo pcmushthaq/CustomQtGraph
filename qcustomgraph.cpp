@@ -64,22 +64,26 @@ QSGNode *QCustomGraph::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
 
     if (m_geometryChanged || m_samplesChanged) {
         for( int i=0;i<m_series.size();i++){
+
             if(m_series[i]->graphType() ==  BaseGraphSeries::GraphType::LineGraph) {
                 /// Handle line graph
                 auto lineSer=static_cast<LineGraphSeries*> (m_series[i]);
                 auto lineNode=static_cast<LineNode *>(n->lines[i]);
-                lineNode->updateGeometry(rect, lineSer->dataPoint(), 250);
+                if(lineSer->axisX()!=nullptr && lineSer->axisX()->max() != lineSer->axisX()->min()){
+                lineNode->updateGeometry(rect, lineSer->dataPoint(),lineSer->axisX()->min(),lineSer->axisX()->max());
+                }
+                else{
+                    lineNode->updateGeometry(rect, lineSer->dataPoint());
+                }
             }
+
             else if(m_series[i]->graphType() ==  BaseGraphSeries::GraphType::AreaGraph) {
                 /// Handle area graph
                 auto areaSer=static_cast<AreaGraphSeries*> (m_series[i]);
                 auto areaNode=static_cast<AreaNode *>(n->lines[i]);
-                areaNode->updateGeometry(rect, areaSer->dataPoints(), 250);
+                areaNode->updateGeometry(rect, areaSer->dataPoints());
             }
         }
-        // for( const auto &lin: n->line){
-        //         n->line.updateGeometry(rect, lin->dataPoint(),250);
-        // }
 
 
     }
@@ -113,11 +117,18 @@ void QCustomGraph::removeFirstSample()
 
 void QCustomGraph::append_series(QQmlListProperty<BaseGraphSeries> *list, BaseGraphSeries *ser)
 {
-    std::cout<<"Adding series"<<std::endl;
     QCustomGraph *chart = qobject_cast<QCustomGraph *>(list->object);
     if (chart) {
-        // ser->setParentItem(chart);
         chart->m_series.append(ser);
         chart->m_samplesChanged=true;
+        QObject::connect(ser, &BaseGraphSeries::seriesChanged,
+                         chart, &QCustomGraph::onGraphSeriesChanged);
     }
+}
+
+void QCustomGraph::onGraphSeriesChanged()
+{
+    m_samplesChanged=true;
+    update();
+
 }

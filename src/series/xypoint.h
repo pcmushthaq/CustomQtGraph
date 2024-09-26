@@ -13,6 +13,7 @@ class XYPoint : public QObject
     Q_PROPERTY(double y READ y WRITE setY NOTIFY yChanged FINAL)
 public:
     explicit XYPoint(QObject *parent = nullptr);
+    XYPoint(qreal x, qreal y,QObject *parent = nullptr);
 
     double x() const;
     void setX(double newX);

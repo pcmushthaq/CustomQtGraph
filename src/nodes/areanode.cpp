@@ -143,7 +143,7 @@ AreaNode::AreaNode(float size, float spread, const QColor &color)
  * The position of each pair of points is identical, but we use the third value
  * "t" to shift the point up or down and to add antialiasing.
  */
-void AreaNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples, size_t maxPointCount)
+void AreaNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples)
 {
 
     m_geometry.allocate(samples.size());

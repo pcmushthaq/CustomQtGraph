@@ -143,7 +143,7 @@ LineNode::LineNode(float size, float spread, const QColor &color)
  * The position of each pair of points is identical, but we use the third value
  * "t" to shift the point up or down and to add antialiasing.
  */
-void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples, size_t maxPointCount)
+void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &samples)
 {
 
     m_geometry.allocate(samples.size() * 2);
@@ -158,6 +158,35 @@ void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint*> &sampl
     LineVertex *v = (LineVertex *) m_geometry.vertexData();
     for (int i=0; i<samples.size(); ++i) {
         auto newX=x + dx * i;
+        auto newY=y + samples.at(i)->y() * h;
+        v[i*2+0].set(newX,newY , 0);
+        v[i*2+1].set(newX, newY, 1);
+    }
+
+    markDirty(QSGNode::DirtyGeometry);
+}
+
+
+/// When min and max values are given,
+/// The graph x points will be starting from min and ending at max
+/// x value of max means that the point will be at the width
+void LineNode::updateGeometry(const QRectF &bounds, const QList<XYPoint *> &samples, double min, double max)
+{
+    if(min==max){
+        return;
+    }
+    m_geometry.allocate(samples.size() * 2);
+
+    float x = bounds.x();
+    float y = bounds.y();
+    float w = bounds.width();
+    float h = bounds.height();
+
+
+    LineVertex *v = (LineVertex *) m_geometry.vertexData();
+    for (int i=0; i<samples.size(); ++i) {
+        auto mappedValue= (samples.at(i)->x() - min)/(max-min);
+        auto newX=x + mappedValue * w;
         auto newY=y + samples.at(i)->y() * h;
         v[i*2+0].set(newX,newY , 0);
         v[i*2+1].set(newX, newY, 1);

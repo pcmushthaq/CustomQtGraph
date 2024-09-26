@@ -30,10 +30,12 @@ public:
 
     virtual BaseGraphSeries::GraphType graphType() const = 0;
 
-    virtual QColor color() const =0;
+    virtual QColor color() const = 0;
     virtual void setColor(const QColor &newColor) = 0;
 signals:
     void colorChanged();
+
+    void seriesChanged();
 };
 
 #endif // BASEGRAPHSERIES_H

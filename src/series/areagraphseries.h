@@ -11,7 +11,7 @@ class AreaGraphSeries : public BaseGraphSeries
     QML_NAMED_ELEMENT(AreaGraphSeries)
     Q_PROPERTY(LineGraphSeries *upperSeries READ upperSeries WRITE setUpperSeries NOTIFY upperSeriesChanged FINAL)
     Q_PROPERTY(LineGraphSeries *lowerSeries READ lowerSeries WRITE setLowerSeries NOTIFY lowerSeriesChanged FINAL)
-
+    Q_PROPERTY(ValueAxis* axisX READ axisX WRITE setAxisX NOTIFY axisXChanged FINAL)
 
 public:
     explicit AreaGraphSeries(QObject *parent = nullptr);
@@ -28,14 +28,25 @@ public:
      QColor color() const override;
      void setColor(const QColor &newColor) override;
 
-signals:
+     ValueAxis *axisX() const;
+     void setAxisX(ValueAxis *newAxisX);
+
+ signals:
     void upperSeriesChanged();
     void lowerSeriesChanged();
+
+    void axisXChanged();
 
 private:
     LineGraphSeries *m_upperSeries = nullptr;
     LineGraphSeries *m_lowerSeries = nullptr;
     QColor m_Color;
+    ValueAxis *m_axisX = nullptr;
+
+    void onLineSeriesChanged();
+
+    QMetaObject::Connection upperSeriesConnection;
+    QMetaObject::Connection lowerSeriesConnection;
 };
 
 #endif // AREAGRAPHSERIES_H

@@ -47,7 +47,11 @@ void AreaGraphSeries::setUpperSeries(LineGraphSeries *newUpperSeries)
 {
     if (m_upperSeries == newUpperSeries)
         return;
+    QObject::disconnect(upperSeriesConnection);
     m_upperSeries = newUpperSeries;
+    upperSeriesConnection = QObject::connect(m_upperSeries, &BaseGraphSeries::seriesChanged,
+                                             this, &AreaGraphSeries::onLineSeriesChanged);
+
     emit upperSeriesChanged();
 }
 
@@ -60,7 +64,11 @@ void AreaGraphSeries::setLowerSeries(LineGraphSeries *newLowerSeries)
 {
     if (m_lowerSeries == newLowerSeries)
         return;
+    QObject::disconnect(lowerSeriesConnection);
     m_lowerSeries = newLowerSeries;
+    lowerSeriesConnection = QObject::connect(m_lowerSeries, &BaseGraphSeries::seriesChanged,
+                                             this, &AreaGraphSeries::onLineSeriesChanged);
+
     emit lowerSeriesChanged();
 }
 
@@ -75,4 +83,22 @@ void AreaGraphSeries::setColor(const QColor &newColor)
         return;
     m_Color = newColor;
     emit colorChanged();
+}
+
+ValueAxis *AreaGraphSeries::axisX() const
+{
+    return m_axisX;
+}
+
+void AreaGraphSeries::setAxisX(ValueAxis *newAxisX)
+{
+    if (m_axisX == newAxisX)
+        return;
+    m_axisX = newAxisX;
+    emit axisXChanged();
+}
+
+void AreaGraphSeries::onLineSeriesChanged()
+{
+  emit seriesChanged();
 }

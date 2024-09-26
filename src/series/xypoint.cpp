@@ -4,6 +4,12 @@ XYPoint::XYPoint(QObject *parent)
     : QObject{parent}
 {}
 
+XYPoint::XYPoint(qreal x, qreal y,QObject *parent) :
+    QObject{parent},m_x{x},m_y{y}
+{
+
+}
+
 double XYPoint::x() const
 {
     return m_x;

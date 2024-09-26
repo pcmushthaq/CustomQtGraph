@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QtQml/qqmlextensionplugin.h>
 
-Q_IMPORT_QML_PLUGIN(GraphLibraryTestPlugin)
+Q_IMPORT_QML_PLUGIN(QCustomGraphPlugin)
 
 int main(int argc, char *argv[])
 {
