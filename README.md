@@ -12,6 +12,8 @@ To create a simple line graph, create an instance of QCustomGraph and add a Line
 
 The xAxis and yAxis should be set to plot the graphs properly
 
+![Alt text](images/lineGraph.png?raw=true "Simple Line Graph")
+
 ```
 import QCustomGraph
 
