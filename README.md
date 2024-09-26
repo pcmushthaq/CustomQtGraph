@@ -8,9 +8,11 @@ Support for AreaChart is under development.
 
 ## Example Line Graph
 
-To create a simple line graph, create an instance of QCusomtGraph and add a LineGraphSeries element inside
+To create a simple line graph, create an instance of QCustomGraph and add a LineGraphSeries element inside
 
 ```
+import QCustomGraph
+
 QCustomGraph {
         id: graph
         anchors.fill: parent
