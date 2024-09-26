@@ -38,13 +38,9 @@ Window {
             if (inumber === 200){
                 inumber=0;
             }
-            // lineSeries1.addPoint(inumber,value)
-            areaUpperLineSeries.addPoint(inumber,value/2)
-            areaLowerLineSeries.addPoint(inumber,0)
-            if(areaUpperLineSeries.pointsCount >= 800){
-                // lineSeries1.removeFirst()
-                areaUpperLineSeries.removeFirst()
-                areaLowerLineSeries.removeFirst()
+            lineSeries1.addPoint(inumber,value)
+            if(lineSeries1.pointsCount >= 800){
+                lineSeries1.removeFirst()
 
             }
         }
@@ -61,35 +57,13 @@ Window {
         property int offset: 0
 
         serieses:[
-            // LineGraphSeries{
-            //     id: lineSeries1
-            //     points: [
-            //         XYPoint{x:0;y:0.1 },
-            //         XYPoint{ x: 1 ;y:0.2},
-            //         XYPoint{ x: 2 ;y:0.3}
-            //     ]
-            // },
-
-            AreaGraphSeries{
-                color: "red"
-                upperSeries: LineGraphSeries{
-                    id: areaUpperLineSeries
-                    points: [
-                        XYPoint{x:0;y:0.1 },
-                        XYPoint{ x: 1 ;y:0.5},
-                        XYPoint{ x: 2 ;y:0.3},
-                         XYPoint{ x: 3 ;y:0.4}
-
-                    ]
-                }
-
-                lowerSeries: LineGraphSeries{
-                    id: areaLowerLineSeries
-                    points: [XYPoint{x:0;y:0.8 },
-                        XYPoint{ x: 1 ;y:0.6},
-                        XYPoint{ x: 2 ;y:0.8}
-                    ]
-                }
+            LineGraphSeries{
+                id: lineSeries1
+                points: [
+                    XYPoint{x:0;y:0.1 },
+                    XYPoint{ x: 1 ;y:0.2},
+                    XYPoint{ x: 2 ;y:0.3}
+                ]
             }
         ]
     }
