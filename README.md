@@ -1,6 +1,6 @@
 This is a library which can be used to plot line graphs in QML/QtQuick. A QML component is created in the library.
 
-The API is similar to the QtCharts API but the performance is much better than QtCharts. This is intended to be used for high performance applications. This uses SceneGraph APIs for plotting the graphs.
+The API is similar to the QtCharts API but the performance is much better than QtCharts [See](#performance-comparison-with-qtcharts). This is intended to be used for high performance applications. This uses SceneGraph APIs for plotting the graphs.
 
 This is hardware accelarated.
 
@@ -77,10 +77,10 @@ QtCharts uses QPainter behind the scenes to draw the graph which uses software r
 
 A live sine graph is created both using the QtCharts and the QCustomGraph library and QML profiler was used to analyse the performance differences.
 
-The QCustomGraph has a 73% better performance compared to QtCharts. The mean time for adding a new point has reduced to 40 us from 173 us which is a huge improvement.
+The QCustomGraph has a 75% better performance compared to QtCharts. The mean time for adding a new point has reduced to 40 us from 160 us which is a huge improvement.
 The examples are available as part of the example project.
 
-![Alt text](images/CustomGraphProfile.png?raw=true "QML Profiler statistics for custom qt graph")
+![Alt text](images/CustomGraphsProfile.png?raw=true "QML Profiler statistics for custom qt graph")
 
 ![Alt text](images/QtChartsProfile.png?raw=true "QML Profiler statistics for Qt Charts")
 
