@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QT_QML_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
 
-find_package(Qt6 6.2 COMPONENTS Quick ShaderTools REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick ShaderTools Charts REQUIRED)
 
 qt_add_library(QCustomGraph STATIC)
 qt_add_qml_module(QCustomGraph
@@ -58,6 +58,9 @@ qt_add_qml_module(ExampleProject
     URI ExampleProjectApp
     VERSION 1.0
     QML_FILES example/example.qml
+    QML_FILES example/SimpleLineGraph.qml
+    QML_FILES example/LiveLineGraph.qml
+    QML_FILES example/LiveQtChartsLine.qml
 )
-target_link_libraries(ExampleProject PRIVATE Qt6::Quick QCustomGraphplugin)
+target_link_libraries(ExampleProject PRIVATE Qt6::Quick Qt6::Charts QCustomGraphplugin)
 target_compile_definitions(ExampleProject PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)

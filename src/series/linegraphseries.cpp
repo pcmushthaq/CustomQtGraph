@@ -88,6 +88,12 @@ void LineGraphSeries::removeFirst()
     emit seriesChanged();
 }
 
+void LineGraphSeries::clear()
+{
+    m_points.clear();
+    emit seriesChanged();
+}
+
 int LineGraphSeries::pointsCount() const
 {
     return m_points.size();

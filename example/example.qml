@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import QCustomGraph
 
 Window {
     width: Screen.width * 0.75
@@ -10,59 +9,59 @@ Window {
     visible: true
     title: qsTr("Example Project")
 
-    QCustomGraph {
-        id: graph
+    Component {
+        id: simpleLineGraph
+        SimpleLineGraph {}
+    }
+
+    Component {
+        id: liveLineGraph
+        LiveLineGraph {}
+    }
+
+    Component {
+        id: liveQtCharts
+        LiveQtChartsLine {}
+    }
+
+    Button {
         anchors.top: parent.top
-        anchors.margins: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - 20
-        height: parent.height
+        anchors.left: parent.left
+        text: "Back"
+        visible: viewLoader.sourceComponent !== null
+        onClicked: {
+            viewLoader.sourceComponent = null
+        }
+    }
 
-        serieses: [
-            LineGraphSeries {
-                id: lineSeries
-                color: "green"
-                points: [
-                    XYPoint {
-                        x: 0
-                        y: 10
-                    },
-                    XYPoint {
-                        x: 10
-                        y: 5
-                    },
-                    XYPoint {
-                        x: 20
-                        y: 20
-                    },
-                    XYPoint {
-                        x: 30
-                        y: 15
-                    },
-                    XYPoint {
-                        x: 40
-                        y: 30
-                    },
-                    XYPoint {
-                        x: 50
-                        y: 25
-                    },
-                    XYPoint {
-                        x: 60
-                        y: 40
-                    }
-                ]
+    Column {
+        visible: viewLoader.sourceComponent === null
+        anchors.centerIn: parent
 
-                axisX: ValueAxis {
-                    min: 0
-                    max: 60
-                }
-
-                axisY: ValueAxis {
-                    min: 0
-                    max: 40
-                }
+        Button {
+            text: "Simple LineGraph"
+            onClicked: {
+                viewLoader.sourceComponent = simpleLineGraph
             }
-        ]
+        }
+
+        Button {
+            text: "Live LineGraph"
+            onClicked: {
+                viewLoader.sourceComponent = liveLineGraph
+            }
+        }
+
+        Button {
+            text: "Live QtCharts"
+            onClicked: {
+                viewLoader.sourceComponent = liveQtCharts
+            }
+        }
+    }
+
+    Loader {
+        id: viewLoader
+        anchors.fill: parent
     }
 }

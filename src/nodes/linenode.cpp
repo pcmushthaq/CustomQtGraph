@@ -177,7 +177,7 @@ void LineNode::updateGeometry(const QRectF &bounds,
         auto newX = x + xValue * w;
         auto newY = y + yValue * h;
         v[i * 2 + 0].set(newX, newY, 0);
-        v[i * 2 + 1].set(newX, newY, 1);
+        v[i * 2 + 1].set(newX, newY, 0.8);
     }
 
     markDirty(QSGNode::DirtyGeometry);

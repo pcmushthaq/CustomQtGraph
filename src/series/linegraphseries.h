@@ -34,14 +34,14 @@ public:
     ValueAxis* axisX() const;
     void setAxisX( ValueAxis* &newAxisX);
     ValueAxis* axisY() const;
-    void setAxisY( ValueAxis* &newAxisY);
+    void setAxisY(ValueAxis*& newAxisY);
 
     int pointsCount() const;
 
 public slots:
     void addPoint(qreal x,qreal y);
     void removeFirst();
-
+    void clear();
 
 signals:
     void widthChanged();
